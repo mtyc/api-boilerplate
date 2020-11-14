@@ -1,0 +1,49 @@
+version: "3.1"
+services:
+    mysql:
+        image: mysql:8.0
+        container_name: api-boilerplate-mysql
+        working_dir: /application
+        environment:
+            - MYSQL_ROOT_PASSWORD=rootpasswd
+            - MYSQL_DATABASE=boilerplate
+            - MYSQL_USER=apidb
+            - MYSQL_PASSWORD=apidbpasswd
+        ports:
+            - "3307:3306"
+    php-fpm:
+        build: docker/php-fpm
+        container_name: api-boilerplate-php-fpm
+        working_dir: /application
+        volumes:
+            - .:/application
+            - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+        depends_on:
+            - mysql
+
+    nginx:
+        image: nginx:alpine
+        container_name: api-boilerplate-nginx
+        working_dir: /application
+        volumes:
+            - .:/application
+            - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+        ports:
+            - "80:80"
+        depends_on:
+            -   php-fpm
+
+    mailcatcher:
+        image: schickling/mailcatcher
+        container_name: api-boilerplate-mailcatcher
+        ports:
+            - "1080:1080"
+
+    swagger-ui:
+        image: swaggerapi/swagger-ui
+        container_name: api-boilerplate-swagger-ui
+        environment:
+            - URL=http://localhost/api/doc.json
+        ports:
+            - "8080:8080"
+
