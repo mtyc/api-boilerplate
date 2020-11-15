@@ -3,6 +3,20 @@ security:
     providers:
         users_in_memory: { memory: null }
     firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        api_doc:
+            pattern: ^/api/doc\.json
+            stateless: true
+            anonymous: true
+
+        refresh:
+            pattern: ^/api/token/refresh
+            stateless: true
+            anonymous: true
+
         login:
             pattern: ^/api/login
             stateless: true
@@ -13,19 +27,16 @@ security:
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
         api:
-            pattern: ^/api(?!/doc\.json$)
+            pattern: ^/api
             stateless: true
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+
         main:
             anonymous: true
             lazy: true
             provider: users_in_memory
-
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -36,5 +47,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/doc\.json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

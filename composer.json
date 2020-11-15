@@ -5,6 +5,10 @@
         "php": ">=7.2.5",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/doctrine-bundle": "^2.2",
+        "doctrine/doctrine-migrations-bundle": "^3.0",
+        "doctrine/orm": "^2.7",
+        "gesdinet/jwt-refresh-token-bundle": "^0.9.1",
         "lexik/jwt-authentication-bundle": "^2.9",
         "nelmio/api-doc-bundle": "^4.0",
         "nelmio/cors-bundle": "^2.1",
@@ -15,6 +19,7 @@
         "symfony/yaml": "5.1.*"
     },
     "require-dev": {
+        "symfony/maker-bundle": "^1.23"
     },
     "config": {
         "optimize-autoloader": true,
