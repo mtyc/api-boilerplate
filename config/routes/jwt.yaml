@@ -1,8 +1,8 @@
 api_login_check:
-    path: /api/login_check
+    path: /api/users/login
     methods: POST
 
 gesdinet_jwt_refresh_token:
-    path:       /api/token/refresh
+    path:       /api/users/token/refresh
     controller: gesdinet.jwtrefreshtoken::refresh
     methods: GET

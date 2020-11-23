@@ -4,6 +4,32 @@ nelmio_api_doc:
             title: API Boilerplate
             description: API Boilerplate
             version: 1.0.0
+        paths:
+            /api/users/login:
+                post:
+                    tags:
+                        - Users
+                    description: Login into the api.
+                    requestBody:
+                        content:
+                            'application/json':
+                                schema:
+                                    properties:
+                                        username:
+                                            type: string
+                                            example: test@user.pl
+                                        password:
+                                            type: string
+                                            example: test123!
+            /api/users/token/refresh:
+                get:
+                    tags:
+                        - Users
+                    parameters:
+                        -   in: query
+                            name: refresh_token
+                            schema:
+                                type: string
     areas: # to filter documented areas
         path_patterns:
             - ^/api(?!/doc\.json$) # Accepts routes under /api except /api/doc

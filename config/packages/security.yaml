@@ -1,7 +1,14 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    encoders:
+        App\User\Doctrine\Entity\User:
+            algorithm: auto
+
     providers:
-        users_in_memory: { memory: null }
+        users:
+            entity:
+                class: App\User\Doctrine\Entity\User
+                property: username
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -13,16 +20,16 @@ security:
             anonymous: true
 
         refresh:
-            pattern: ^/api/token/refresh
+            pattern: ^/api/users/token/refresh
             stateless: true
             anonymous: true
 
         login:
-            pattern: ^/api/login
+            pattern: ^/api/users/login
             stateless: true
             anonymous: true
             json_login:
-                check_path: /api/login_check
+                check_path: /api/users/login
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
 
@@ -36,17 +43,12 @@ security:
         main:
             anonymous: true
             lazy: true
-            provider: users_in_memory
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#firewalls-authentication
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+            provider: users
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/api/doc\.json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
