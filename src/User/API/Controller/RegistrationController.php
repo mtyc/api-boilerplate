@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\User\API\Controller;
 
+use App\User\Doctrine\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -37,10 +42,24 @@ class RegistrationController extends AbstractController
      * )
      *
      * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @param EncoderFactoryInterface $encoderFactory
      * @return JsonResponse
      */
-    public function register(Request $request): JsonResponse
+    public function register(Request $request, EntityManagerInterface $entityManager, EncoderFactoryInterface $encoderFactory): JsonResponse
     {
-        return new JsonResponse(['userId' => 'a019288b-2323-4479-8667-cde863a93be1'], 201);
+        $data = json_decode($request->getContent(), true);
+
+        $encoder = $encoderFactory->getEncoder(User::class);
+
+        $user = new User();
+        $user->setUsername($data['email']);
+        $user->setPassword($encoder->encodePassword($data['password'], null));
+        $user->setRoles([]);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return new JsonResponse(['userId' => $user->getId()->toString()], 201);
     }
 }
