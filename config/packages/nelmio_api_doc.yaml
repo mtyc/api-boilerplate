@@ -10,6 +10,17 @@ nelmio_api_doc:
                     tags:
                         - Users
                     description: Login into the api.
+                    responses:
+                        '200':
+                            description: 'Logged in'
+                            content:
+                                'application/json':
+                                    schema:
+                                        properties:
+                                            token:
+                                                type: string
+                                            refresh_token:
+                                                type: string
                     requestBody:
                         content:
                             'application/json':
@@ -30,6 +41,17 @@ nelmio_api_doc:
                             name: refresh_token
                             schema:
                                 type: string
+                    responses:
+                        '200':
+                            description: 'Token refreshed'
+                            content:
+                                'application/json':
+                                    schema:
+                                        properties:
+                                            token:
+                                                type: string
+                                            refresh_token:
+                                                type: string
     areas: # to filter documented areas
         path_patterns:
             - ^/api(?!/doc\.json$) # Accepts routes under /api except /api/doc

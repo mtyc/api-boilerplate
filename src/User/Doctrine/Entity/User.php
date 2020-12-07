@@ -8,6 +8,7 @@ use App\User\Model\UserId;
 use App\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity
@@ -16,10 +17,12 @@ use Ramsey\Uuid\Doctrine\UuidGenerator;
 class User implements UserInterface
 {
     /**
+     * @var UserId
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
      * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     * @Groups({"users_no_sensitive"})
      */
     private $id;
 
@@ -43,6 +46,7 @@ class User implements UserInterface
     /**
      * @var string
      * @ORM\Column(type="string", nullable=false, unique=true)
+     * @Groups({"users_no_sensitive"})
      */
     private $username;
 

@@ -1,5 +1,5 @@
 controllers:
-    resource: ../../src/User/Controller/
+    resource: ../../src/User/API/Controller/
     type: annotation
     defaults:
         _format: json

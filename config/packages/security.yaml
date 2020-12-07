@@ -24,6 +24,11 @@ security:
             stateless: true
             anonymous: true
 
+        register:
+            pattern: ^/api/users/register
+            stateless: true
+            anonymous: true
+
         login:
             pattern: ^/api/users/login
             stateless: true
@@ -51,4 +56,5 @@ security:
         - { path: ^/api/doc\.json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
