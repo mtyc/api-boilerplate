@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\User\Doctrine\Entity;
+namespace App\User\Doctrine;
 
 use App\User\Model\UserId;
 use App\User\Model\UserInterface;
@@ -16,6 +16,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class User implements UserInterface
 {
+    public function __construct(UserId $userId)
+    {
+        $this->id = $userId;
+    }
+
     /**
      * @var UserId
      * @ORM\Id

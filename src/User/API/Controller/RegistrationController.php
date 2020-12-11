@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\User\API\Controller;
 
+use App\CQRS\MessengerCommandBus;
+use App\User\Command\CreateUserCommand;
 use App\User\Doctrine\Entity\User;
+use App\User\Model\UserId;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
+use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,24 +46,18 @@ class RegistrationController extends AbstractController
      * )
      *
      * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param EncoderFactoryInterface $encoderFactory
+     * @param MessengerCommandBus $commandBus
      * @return JsonResponse
      */
-    public function register(Request $request, EntityManagerInterface $entityManager, EncoderFactoryInterface $encoderFactory): JsonResponse
+    public function register(Request $request, MessengerCommandBus $commandBus): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        $encoder = $encoderFactory->getEncoder(User::class);
+        $userId = new UserId(Uuid::uuid4());
+        $createUser = new CreateUserCommand($userId, $data['email'], $data['password']);
 
-        $user = new User();
-        $user->setUsername($data['email']);
-        $user->setPassword($encoder->encodePassword($data['password'], null));
-        $user->setRoles([]);
+        $commandBus->dispatch($createUser);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        return new JsonResponse(['userId' => $user->getId()->toString()], 201);
+        return new JsonResponse(['userId' => $userId->toString()], 201);
     }
 }
