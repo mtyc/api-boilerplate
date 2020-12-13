@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\User\Command;
 
 use App\CQRS\Command;
-use App\User\Model\UserId;
 
 class CreateUserCommand implements Command
 {
@@ -15,14 +14,14 @@ class CreateUserCommand implements Command
 
     private $password;
 
-    public function __construct(UserId $userId, string $username, string $password)
+    public function __construct(string $userId, string $username, string $password)
     {
         $this->userId = $userId;
         $this->username = $username;
         $this->password = $password;
     }
 
-    public function getUserId(): UserId
+    public function getUserId(): string
     {
         return $this->userId;
     }

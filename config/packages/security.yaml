@@ -6,7 +6,7 @@ security:
     providers:
         users:
             entity:
-                class: App\User\Doctrine\Entity\User
+                class: App\User\Doctrine\User
                 property: username
 
     firewalls:
@@ -25,7 +25,7 @@ security:
             anonymous: true
 
         register:
-            pattern: ^/api/users/register
+            pattern: ^/api/users/create
             stateless: true
             anonymous: true
 
@@ -56,5 +56,5 @@ security:
         - { path: ^/api/doc\.json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/register, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/users/create, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

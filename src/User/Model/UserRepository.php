@@ -6,5 +6,5 @@ namespace App\User\Model;
 
 interface UserRepository
 {
-    public function create(UserId $userId, string $username, string $password): void;
+    public function save(UserInterface $user): void;
 }

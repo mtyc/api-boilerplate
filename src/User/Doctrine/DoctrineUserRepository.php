@@ -4,26 +4,24 @@ declare(strict_types=1);
 
 namespace App\User\Doctrine;
 
-use App\User\Model\UserId;
+use App\User\Model\UserInterface;
 use App\User\Model\UserRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
-class DoctrineUserRepository implements UserRepository
+class DoctrineUserRepository extends ServiceEntityRepository implements UserRepository
 {
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
+        parent::__construct($registry, User::class);
         $this->entityManager = $entityManager;
     }
 
-    public function create(UserId $userId, string $username, string $password): void
+    public function save(UserInterface $user): void
     {
-        $user = new User($userId);
-        $user->setUsername($username);
-        $user->setPassword($password);
-        $user->setRoles([]);
-
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }

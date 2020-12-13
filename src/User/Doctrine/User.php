@@ -7,7 +7,6 @@ namespace App\User\Doctrine;
 use App\User\Model\UserId;
 use App\User\Model\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Doctrine\UuidGenerator;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
@@ -18,15 +17,14 @@ class User implements UserInterface
 {
     public function __construct(UserId $userId)
     {
-        $this->id = $userId;
+        $this->id = $userId->toString();
     }
 
     /**
      * @var UserId
      * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
+     * @ORM\Column(type="string", length=36, unique=true)
+     * @ORM\GeneratedValue(strategy="NONE")
      * @Groups({"users_no_sensitive"})
      */
     private $id;

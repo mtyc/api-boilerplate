@@ -7,22 +7,17 @@ namespace App\User\API\Controller;
 use App\CQRS\MessengerCommandBus;
 use App\User\Command\CreateUserCommand;
 use App\User\Doctrine\Entity\User;
-use App\User\Model\UserId;
-use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Annotations as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
-class RegistrationController extends AbstractController
+class CreateController extends AbstractController
 {
     /**
-     * @Route("/api/users/register", methods={"POST"})
+     * @Route("/api/users/create", methods={"POST"})
      * @OA\Tag(name="Users")
      * @OA\RequestBody(
      *     required=true,
@@ -53,11 +48,11 @@ class RegistrationController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $userId = new UserId(Uuid::uuid4());
+        $userId = Uuid::uuid4()->toString();
         $createUser = new CreateUserCommand($userId, $data['email'], $data['password']);
 
         $commandBus->dispatch($createUser);
 
-        return new JsonResponse(['userId' => $userId->toString()], 201);
+        return new JsonResponse(['userId' => $userId], 201);
     }
 }
