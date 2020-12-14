@@ -24,7 +24,7 @@ class CreateController extends AbstractController
      *     @OA\MediaType(
      *         mediaType="application/json",
      *         @OA\Schema(
-     *             @OA\Property(property="email", example="jdoe@niepodam.pl"),
+     *             @OA\Property(property="username", example="jdoe@niepodam.pl"),
      *             @OA\Property(property="password", example="secretPasswd")
      *         )
      *     )
@@ -35,7 +35,7 @@ class CreateController extends AbstractController
      *     @OA\MediaType(
      *      mediaType="application/json",
      *     @OA\Schema(
-     *     @OA\Property(property="userId", type="UUID", example="a019288b-2323-4479-8667-cde863a93be1")
+     *     @OA\Property(property="userId", type="string|uuid", example="a019288b-2323-4479-8667-cde863a93be1")
      * )
      * )
      * )
@@ -49,7 +49,7 @@ class CreateController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $userId = Uuid::uuid4()->toString();
-        $createUser = new CreateUserCommand($userId, $data['email'], $data['password']);
+        $createUser = new CreateUserCommand($userId, $data['username'], $data['password']);
 
         $commandBus->dispatch($createUser);
 
