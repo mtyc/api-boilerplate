@@ -17,7 +17,7 @@ class User implements UserInterface
 {
     public function __construct(UserId $userId)
     {
-        $this->id = $userId->toString();
+        $this->id = $userId;
     }
 
     /**
@@ -58,7 +58,7 @@ class User implements UserInterface
      */
     public function getId(): UserId
     {
-        return new UserId($this->id);
+        return $this->id;
     }
 
     public function getRoles(): array

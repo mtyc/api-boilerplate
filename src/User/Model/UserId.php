@@ -13,7 +13,7 @@ class UserId
         $this->uuid = $uuid;
     }
 
-    public function toString(): string
+    public function __toString(): string
     {
         return $this->uuid;
     }
