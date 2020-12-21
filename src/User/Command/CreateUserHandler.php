@@ -11,11 +11,11 @@ use App\User\Model\UserRepository;
 
 class CreateUserHandler implements CommandHandler
 {
-    private $userRepository;
+    private UserRepository $userRepository;
 
-    private $passwordEncoder;
+    private PasswordEncoder $passwordEncoder;
 
-    private $userFactory;
+    private UserFactory $userFactory;
 
     public function __construct(
         UserFactory $userFactory,

@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineUserRepository extends ServiceEntityRepository implements UserRepository
 {
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
 
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {

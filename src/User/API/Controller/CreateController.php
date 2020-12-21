@@ -46,7 +46,7 @@ class CreateController extends AbstractController
      */
     public function register(Request $request, MessengerCommandBus $commandBus): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
         $userId = Uuid::uuid4()->toString();
         $createUser = new CreateUserCommand($userId, $data['username'], $data['password']);

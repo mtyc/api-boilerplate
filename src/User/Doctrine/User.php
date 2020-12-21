@@ -15,47 +15,40 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 class User implements UserInterface
 {
-    public function __construct(UserId $userId)
-    {
-        $this->id = $userId;
-    }
-
     /**
-     * @var UserId
      * @ORM\Id
      * @ORM\Column(type="string", length=36, unique=true)
      * @ORM\GeneratedValue(strategy="NONE")
      * @Groups({"users_no_sensitive"})
      */
-    private $id;
+    private UserId $id;
 
     /**
-     * @var string[]
      * @ORM\Column(type="json")
      */
-    private $roles;
+    private array $roles;
 
     /**
-     * @var string|null
      * @ORM\Column(type="string", nullable=false)
      */
-    private $password;
+    private ?string $password;
 
     /**
      * @var string|null
      */
-    private $salt;
+    private ?string $salt;
 
     /**
-     * @var string
      * @ORM\Column(type="string", nullable=false, unique=true)
      * @Groups({"users_no_sensitive"})
      */
-    private $username;
+    private string $username;
 
-    /**
-     * @return UserId
-     */
+    public function __construct(UserId $userId)
+    {
+        $this->id = $userId;
+    }
+
     public function getId(): UserId
     {
         return $this->id;
@@ -94,9 +87,6 @@ class User implements UserInterface
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     */
     public function setUsername(string $username): void
     {
         $this->username = $username;

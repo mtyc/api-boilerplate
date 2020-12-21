@@ -8,11 +8,11 @@ use App\CQRS\Command;
 
 class CreateUserCommand implements Command
 {
-    private $userId;
+    private string $userId;
 
-    private $username;
+    private string $username;
 
-    private $password;
+    private string $password;
 
     public function __construct(string $userId, string $username, string $password)
     {

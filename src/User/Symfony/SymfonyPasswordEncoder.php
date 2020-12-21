@@ -11,10 +11,7 @@ use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 
 class SymfonyPasswordEncoder implements PasswordEncoder
 {
-    /**
-     * @var PasswordEncoderInterface
-     */
-    private $encoder;
+    private PasswordEncoderInterface $encoder;
 
     public function __construct(EncoderFactoryInterface $encoderFactory)
     {

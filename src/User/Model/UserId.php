@@ -6,7 +6,7 @@ namespace App\User\Model;
 
 class UserId
 {
-    private $uuid;
+    private string $uuid;
 
     public function __construct(string $uuid)
     {
