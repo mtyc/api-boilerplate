@@ -21,7 +21,7 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="NONE")
      * @Groups({"users_no_sensitive"})
      */
-    private UserId $id;
+    private $id;
 
     /**
      * @ORM\Column(type="json")
@@ -32,11 +32,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", nullable=false)
      */
     private ?string $password;
-
-    /**
-     * @var string|null
-     */
-    private ?string $salt;
 
     /**
      * @ORM\Column(type="string", nullable=false, unique=true)
@@ -51,6 +46,9 @@ class User implements UserInterface
 
     public function getId(): UserId
     {
+        if (!$this->id instanceof UserId){
+            $this->id = new UserId($this->id);
+        }
         return $this->id;
     }
 
@@ -77,9 +75,8 @@ class User implements UserInterface
         $this->password = $password;
     }
 
-    public function getSalt(): ?string
+    public function getSalt(): void
     {
-        return $this->salt;
     }
 
     public function getUsername(): string

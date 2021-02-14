@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace App\User\API\Controller;
 
 use App\CQRS\MessengerCommandBus;
+use App\Http\Payload;
+use App\Http\Response;
 use App\User\Command\CreateUserCommand;
 use App\User\Doctrine\Entity\User;
+use App\User\Model\UserId;
+use Exception;
 use OpenApi\Annotations as OA;
 use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,18 +45,27 @@ class CreateController extends AbstractController
      * )
      *
      * @param Request $request
+     * @param Response $response
+     * @param Payload $payload
      * @param MessengerCommandBus $commandBus
      * @return JsonResponse
      */
-    public function register(Request $request, MessengerCommandBus $commandBus): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
+    public function register(
+        Request $request,
+        Response $response,
+        Payload $payload,
+        MessengerCommandBus $commandBus
+    ): JsonResponse {
+        $data = $payload->fromRequest($request);
 
-        $userId = Uuid::uuid4()->toString();
-        $createUser = new CreateUserCommand($userId, $data['username'], $data['password']);
+        try {
+            $userId = new UserId(Uuid::uuid4()->toString());
+            $createUser = new CreateUserCommand($userId, $data['username'], $data['password']);
+            $commandBus->dispatch($createUser);
+        } catch (Exception $exception) {
+            return $response->errorJsonResponse($exception->getMessage());
+        }
 
-        $commandBus->dispatch($createUser);
-
-        return new JsonResponse(['userId' => $userId], 201);
+        return $response->createdJsonResponse(['userId' => (string)$userId]);
     }
 }

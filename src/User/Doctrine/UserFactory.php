@@ -9,11 +9,9 @@ use App\User\Model\UserInterface;
 
 class UserFactory
 {
-    public function create(string $id, string $username, string $password): UserInterface
+    public function create(UserId $id, string $username, string $password): UserInterface
     {
-        $userId = new UserId($id);
-
-        $user = new User($userId);
+        $user = new User($id);
         $user->setUsername($username);
         $user->setPassword($password);
         $user->setRoles([]);
