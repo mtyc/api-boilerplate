@@ -28,10 +28,10 @@ nelmio_api_doc:
                                     properties:
                                         username:
                                             type: string
-                                            example: test@user.pl
+                                            example: jdoe@niepodam.pl
                                         password:
                                             type: string
-                                            example: test123!
+                                            example: secretPasswd
             /api/users/token/refresh:
                 get:
                     tags:
