@@ -1,12 +1,11 @@
-FROM phpdockerio/php74-fpm:latest
+FROM php:8.2-fpm-alpine
 WORKDIR "/application"
 
-# Fix debconf warnings upon build
-ARG DEBIAN_FRONTEND=noninteractive
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions
+RUN install-php-extensions pcov bcmath pdo_mysql sockets zip pcntl intl soap imagick xdebug-3.2.0 @composer-2 gd
 
-# Install selected extensions and other stuff
-RUN apt-get update \
-    && apt-get -y --no-install-recommends install  php7.4-mysql php7.4-redis php7.4-xdebug php7.4-bcmath php7.4-gd php7.4-gmp php7.4-intl php7.4-zip \
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* \
-    && mkdir /.cache \
-    && chmod -R 777 /.cache
+RUN mkdir -p /usr/share/man/man1/
+RUN mkdir -p /usr/share/man/man7/
+
+RUN mkdir -p /usr/local/bin/

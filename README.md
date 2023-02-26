@@ -10,7 +10,7 @@ Project created to start writing simple but extendable REST API with Symfony fra
 
 or setup by yourself with
 
-* PHP 7.4
+* PHP 8.2
 * Composer 2
 * nginx
 * Swagger UI
@@ -30,10 +30,16 @@ $ docker-compose up -d
 
 ```bash
 # enter php container
-$ docker exec -it -u $(id -u):$(id -g) api-boilerplate-php-fpm bash
+$ docker exec -it -u $(id -u):$(id -g) api-boilerplate-php-fpm ash
 
 # run composer
 $ composer install
+
+# run migrations
+$ bin/console d:m:m
+
+# run data fixtures
+$ bin/console d:f:l
 ```
 
 ### Setup JWT
