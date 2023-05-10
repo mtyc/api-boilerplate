@@ -16,6 +16,14 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class User implements UserInterface
 {
     /**
+     * @ORM\Id
+     * @ORM\Column(type="string", length=36, unique=true)
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @Groups({"users_no_sensitive"})
+     */
+    private readonly UserId $id;
+
+    /**
      * @ORM\Column(type="json")
      */
     private array $roles;
@@ -31,14 +39,9 @@ class User implements UserInterface
      */
     private string $username;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36, unique=true)
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @Groups({"users_no_sensitive"})
-     */
-    public function __construct(private readonly UserId $id)
+    public function __construct(UserId $id)
     {
+        $this->id = $id;
     }
 
     public function getId(): UserId
