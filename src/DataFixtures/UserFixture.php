@@ -9,7 +9,6 @@ use App\User\Command\CreateUserCommand;
 use App\User\Model\UserId;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Ramsey\Uuid\Uuid;
 
 class UserFixture extends Fixture
 {
@@ -21,7 +20,7 @@ class UserFixture extends Fixture
     public function load(ObjectManager $manager): void
     {
         $userCreateCommand = new CreateUserCommand(
-            new UserId(Uuid::uuid4()->toString()),
+            new UserId(),
             'jdoe@niepodam.pl',
             'secretPasswd'
         );

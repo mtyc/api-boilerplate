@@ -6,24 +6,19 @@ namespace App\User\Command;
 
 use App\CQRS\CommandHandler;
 use App\User\Doctrine\UserFactory;
-use App\User\Model\PasswordEncoder;
 use App\User\Model\UserRepository;
 
 class CreateUserHandler implements CommandHandler
 {
     private UserRepository $userRepository;
 
-    private PasswordEncoder $passwordEncoder;
-
     private UserFactory $userFactory;
 
     public function __construct(
         UserFactory $userFactory,
         UserRepository $userRepository,
-        PasswordEncoder $passwordEncoder
     ) {
         $this->userRepository = $userRepository;
-        $this->passwordEncoder = $passwordEncoder;
         $this->userFactory = $userFactory;
     }
 
@@ -32,7 +27,7 @@ class CreateUserHandler implements CommandHandler
         $user = $this->userFactory->create(
             $command->getUserId(),
             $command->getUsername(),
-            $this->passwordEncoder->encodePassword($command->getPassword())
+            $command->getPassword()
         );
 
         $this->userRepository->save($user);

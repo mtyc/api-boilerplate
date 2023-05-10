@@ -16,14 +16,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class User implements UserInterface
 {
     /**
-     * @ORM\Id
-     * @ORM\Column(type="string", length=36, unique=true)
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @Groups({"users_no_sensitive"})
-     */
-    private $id;
-
-    /**
      * @ORM\Column(type="json")
      */
     private array $roles;
@@ -39,16 +31,18 @@ class User implements UserInterface
      */
     private string $username;
 
-    public function __construct(UserId $userId)
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="string", length=36, unique=true)
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @Groups({"users_no_sensitive"})
+     */
+    public function __construct(private readonly UserId $id)
     {
-        $this->id = $userId;
     }
 
     public function getId(): UserId
     {
-        if (!$this->id instanceof UserId){
-            $this->id = new UserId($this->id);
-        }
         return $this->id;
     }
 
@@ -75,11 +69,7 @@ class User implements UserInterface
         $this->password = $password;
     }
 
-    public function getSalt(): void
-    {
-    }
-
-    public function getUsername(): string
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }
