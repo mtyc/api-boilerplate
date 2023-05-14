@@ -42,7 +42,7 @@ composer: ## Run composer, pass the parameter "c=" to run a given command, examp
 	@$(COMPOSER) $(c)
 
 vendor: ## Install vendors according to the current composer.lock file
-vendor: c=install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction
+vendor: c=install --prefer-dist --no-progress --no-scripts --no-interaction
 vendor: composer
 
 ## —— Test 🧙 ——————————————————————————————————————————————————————————————————
@@ -54,5 +54,11 @@ sf: ## List all Symfony commands or pass the parameter "c=" to run a given comma
 	@$(eval c ?=)
 	@$(SYMFONY) $(c)
 
-cc: c=c:c ## Clear the cache
+cc: c=c\:c ## Clear the cache
 cc: sf
+
+dmm: c=d\:m\:m ## executes migrations
+dmm: sf
+
+dfl: c=d\:f\:l
+dfl: sf

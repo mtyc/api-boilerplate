@@ -23,23 +23,20 @@ or setup by yourself with
 
 ```bash
 # start project containers
-$ docker-compose up -d
+$ make up
 ```
 
 ### Install dependencies
 
 ```bash
-# enter php container
-$ docker exec -it -u $(id -u):$(id -g) api-boilerplate-php-fpm ash
-
-# run composer
-$ composer install
+# install required vendors
+$ make vendor
 
 # run migrations
-$ bin/console d:m:m
+$ make dmm
 
 # run data fixtures
-$ bin/console d:f:l
+$ make dfl
 ```
 
 ### Setup JWT
