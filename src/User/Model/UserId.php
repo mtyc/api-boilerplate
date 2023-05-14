@@ -15,6 +15,14 @@ class UserId
         $this->uuid = Uuid::v7()->toRfc4122();
     }
 
+    public static function fromString(string $userIdAsString): UserId
+    {
+        $self = new self();
+        $self->uuid = $userIdAsString;
+
+        return $self;
+    }
+
     public function __toString(): string
     {
         return $this->uuid;

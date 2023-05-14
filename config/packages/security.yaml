@@ -14,41 +14,24 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        api_doc:
-            pattern: ^/api/doc\.json
-            stateless: true
-
-        refresh:
-            pattern: ^/api/users/token/refresh
-            stateless: true
-
-        register:
-            pattern: ^/api/users/create
-            stateless: true
-
-        login:
-            pattern: ^/api/users/login
-            stateless: true
-            json_login:
-                check_path: /api/users/login
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
         api:
             pattern: ^/api
             stateless: true
             entry_point: jwt
+            json_login:
+                check_path: /api/users/login # or, if you have defined a route for your login path, the route name you used
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
             jwt: ~
-
-        main:
-            lazy: true
+            refresh_jwt:
+                check_path: /api/users/token/refresh # or, you may use the `api_refresh_token` route name
             provider: users
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/api/doc\.json, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/token/refresh, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/users/create, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/doc\.json, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/token/refresh, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users/create, roles: PUBLIC_ACCESS }
         - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }

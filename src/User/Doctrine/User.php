@@ -21,7 +21,7 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="NONE")
      * @Groups({"users_no_sensitive"})
      */
-    private readonly UserId $id;
+    private readonly string $id;
 
     /**
      * @ORM\Column(type="json")
@@ -41,12 +41,12 @@ class User implements UserInterface
 
     public function __construct(UserId $id)
     {
-        $this->id = $id;
+        $this->id = (string) $id;
     }
 
     public function getId(): UserId
     {
-        return $this->id;
+        return UserId::fromString($this->id);
     }
 
     public function getRoles(): array
