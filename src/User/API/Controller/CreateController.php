@@ -8,11 +8,9 @@ use App\CQRS\MessengerCommandBus;
 use App\Http\Payload;
 use App\Http\Response;
 use App\User\Command\CreateUserCommand;
-use App\User\Doctrine\Entity\User;
 use App\User\Model\UserId;
 use Exception;
 use OpenApi\Annotations as OA;
-use Ramsey\Uuid\Uuid;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -59,7 +57,7 @@ class CreateController extends AbstractController
         $data = $payload->fromRequest($request);
 
         try {
-            $userId = new UserId(Uuid::uuid4()->toString());
+            $userId = new UserId();
             $createUser = new CreateUserCommand($userId, $data['username'], $data['password']);
             $commandBus->dispatch($createUser);
         } catch (Exception $exception) {

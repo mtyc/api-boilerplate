@@ -4,22 +4,17 @@ declare(strict_types=1);
 
 namespace App\User\Symfony;
 
-use App\User\Doctrine\User;
 use App\User\Model\PasswordEncoder;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SymfonyPasswordEncoder implements PasswordEncoder
 {
-    private PasswordEncoderInterface $encoder;
-
-    public function __construct(EncoderFactoryInterface $encoderFactory)
+    public function __construct(private readonly UserPasswordHasherInterface $userPasswordHasher)
     {
-        $this->encoder = $encoderFactory->getEncoder(User::class);
     }
 
     public function encodePassword(string $password): string
     {
-        return $this->encoder->encodePassword($password, null);
+        return $this->userPasswordHasher->hashPassword($user, $password);
     }
 }

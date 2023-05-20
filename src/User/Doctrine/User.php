@@ -21,7 +21,7 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="NONE")
      * @Groups({"users_no_sensitive"})
      */
-    private $id;
+    private readonly string $id;
 
     /**
      * @ORM\Column(type="json")
@@ -39,17 +39,14 @@ class User implements UserInterface
      */
     private string $username;
 
-    public function __construct(UserId $userId)
+    public function __construct(UserId $id)
     {
-        $this->id = $userId;
+        $this->id = (string) $id;
     }
 
     public function getId(): UserId
     {
-        if (!$this->id instanceof UserId){
-            $this->id = new UserId($this->id);
-        }
-        return $this->id;
+        return UserId::fromString($this->id);
     }
 
     public function getRoles(): array
@@ -75,11 +72,7 @@ class User implements UserInterface
         $this->password = $password;
     }
 
-    public function getSalt(): void
-    {
-    }
-
-    public function getUsername(): string
+    public function getUserIdentifier(): string
     {
         return $this->username;
     }

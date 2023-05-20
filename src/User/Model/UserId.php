@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace App\User\Model;
 
-use InvalidArgumentException;
+use Symfony\Component\Uid\Uuid;
 
 class UserId
 {
     private string $uuid;
 
-    public function __construct(string $uuid)
+    public function __construct()
     {
-        if (empty($uuid)) {
-            throw new InvalidArgumentException('User id can not be empty');
-        }
+        $this->uuid = Uuid::v7()->toRfc4122();
+    }
 
-        $this->uuid = $uuid;
+    public static function fromString(string $userIdAsString): UserId
+    {
+        $self = new self();
+        $self->uuid = $userIdAsString;
+
+        return $self;
     }
 
     public function __toString(): string
